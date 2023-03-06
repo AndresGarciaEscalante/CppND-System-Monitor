@@ -39,3 +39,12 @@ This project uses [Make](https://www.gnu.org/software/make/). The Makefile has f
 5. Implement the `System`, `Process`, and `Processor` classes, as well as functions within the `LinuxParser` namespace.
 
 6. Submit!
+
+## Errors 
+If ```Could NOT find Curses (missing: CURSES_LIBRARY CURSES_INCLUDE_PATH)``` proceed with the following instructions:
+
+1. ```sudo apt install libncurses5-dev libncursesw5-dev```
+
+2. ```make clean```
+
+3. ```make build```
