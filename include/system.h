@@ -6,6 +6,8 @@
 
 #include "process.h"
 #include "processor.h"
+#include "linux_parser.h"
+#include "format.h"
 
 class System {
  public:
