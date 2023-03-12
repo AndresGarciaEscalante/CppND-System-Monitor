@@ -20,7 +20,33 @@ You need to properly format the uptime. Refer to the comments mentioned in forma
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+    Process process;
+    // Check all available pids
+    vector<int> pids = LinuxParser::Pids();
+    for(int i = 0; i < pids.size();i++){
+        //Update pid
+        process.SetPid(pids[i]);
+        //Update user
+        string uid = LinuxParser::Uid(pids[i]);
+        process.SetUser(LinuxParser::User(uid));
+        //process.SetUser(LinuxParser::User(pids[i]));
+
+
+        //Update cpu utilization
+        //process.SetCpuUtilization();
+        //Update ram
+        //process.SetRam();
+        //Update time
+        //process.SetUpTime();
+        //Update command
+        //process.SetCommand();
+        //add this process to the vector of processes
+        processes_.push_back(process);
+    }
+
+    return processes_; 
+}
 
 // TODO: Return the system's kernel identifier (string)
 std::string System::Kernel() { 
