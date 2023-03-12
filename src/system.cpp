@@ -40,7 +40,7 @@ vector<Process>& System::Processes() {
         //Update time
         //process.SetUpTime();
         //Update command
-        //process.SetCommand();
+        process.SetCommand(LinuxParser::Command(pids[i]));
         //add this process to the vector of processes
         processes_.push_back(process);
     }
