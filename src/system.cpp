@@ -12,6 +12,7 @@ using std::set;
 using std::size_t;
 using std::string;
 using std::vector;
+
 /*You need to complete the mentioned TODOs in order to satisfy the rubric criteria "The student will be able to extract and display basic data about the system."
 
 You need to properly format the uptime. Refer to the comments mentioned in format. cpp for formatting the uptime.*/
@@ -30,13 +31,12 @@ vector<Process>& System::Processes() {
         //Update user
         string uid = LinuxParser::Uid(pids[i]);
         process.SetUser(LinuxParser::User(uid));
-        //process.SetUser(LinuxParser::User(pids[i]));
-
-
+        
         //Update cpu utilization
         //process.SetCpuUtilization();
         //Update ram
-        //process.SetRam();
+        string a =LinuxParser::Ram(pids[i]);
+        process.SetRam(LinuxParser::Ram(pids[i]));
         //Update time
         //process.SetUpTime();
         //Update command

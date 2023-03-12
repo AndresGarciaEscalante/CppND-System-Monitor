@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 #include "linux_parser.h"
 
@@ -184,7 +185,27 @@ string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
 
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Ram(int pid) { 
+  float convertMB;
+  string line;
+  string key;
+  string value;
+  std::ifstream filestream(kProcDirectory+std::to_string(pid)+kStatusFilename);
+  
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key) {
+        if (key == "VmSize:") {
+          linestream >> value;
+          convertMB = stof(value)/1000;
+          return std::to_string(convertMB);
+        }
+      }
+    }
+  }
+  return value;
+}
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
