@@ -35,10 +35,9 @@ vector<Process>& System::Processes() {
         //Update cpu utilization
         //process.SetCpuUtilization();
         //Update ram
-        string a =LinuxParser::Ram(pids[i]);
         process.SetRam(LinuxParser::Ram(pids[i]));
         //Update time
-        //process.SetUpTime();
+        process.SetUpTime(LinuxParser::UpTime(pids[i]));
         //Update command
         process.SetCommand(LinuxParser::Command(pids[i]));
         //add this process to the vector of processes
