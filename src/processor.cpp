@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unistd.h>
 
 using std::string;
 using std::vector;
@@ -41,7 +42,7 @@ float Processor::Utilization() {
     totald = Total - PrevTotal;
     idled = Idle - PrevIdle;
 
-    cpu_percentage = (totald - idled)/totald*100;
+    cpu_percentage = (totald - idled)/totald;
 
     prev_user = ac_user;
     prev_nice = ac_nice;
@@ -54,5 +55,30 @@ float Processor::Utilization() {
     prev_guest = ac_guest;
     prev_guest_nice = ac_guest_nice;
     
+    return cpu_percentage; 
+}
+
+float Processor::Utilization_Processes(int pid, long uptime) { 
+    // Store Values for CPU utilization
+    //float dummy, user ,state,ppid ,pgrp ,session ,tty_nr ,tpgid ,flags ,minflt ,cminflt ,majflt ,cmajflt ,utime ,stime 
+    //,cutime ,cstime ,priority ,nice ,num_threads ,itrealvalue ,starttime;
+    float utime ,stime ,cutime ,cstime ,starttime;
+    
+    // Retrieve the information
+    vector<string> cpu = LinuxParser::CpuUtilization(pid);
+    utime = stof(cpu[13]);;
+    stime = stof(cpu[14]);;
+    cutime = stof(cpu[15]);;
+    cstime = stof(cpu[16]);;
+    starttime = stof(cpu[21]);;
+
+    // Calculate the CPU utilization
+    auto total_time = utime + stime;
+    total_time = total_time + cutime + cstime;
+
+    auto seconds = uptime - (starttime /sysconf(_SC_CLK_TCK));
+
+    auto cpu_percentage = 100 * ((total_time/sysconf(_SC_CLK_TCK)) / seconds);
+
     return cpu_percentage; 
 }

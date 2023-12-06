@@ -19,6 +19,7 @@ class Processor {
   }
 
   float Utilization();  // TODO: See src/processor.cpp
+  float Utilization_Processes(int pid, long uptime);  // TODO: See src/processor.cpp
 
   // TODO: Declare any necessary private members
  private:

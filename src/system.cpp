@@ -23,9 +23,10 @@ Processor& System::Cpu() { return cpu_; }
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
     Process process;
+    Processor processor;
     // Check all available pids
     vector<int> pids = LinuxParser::Pids();
-    for(int i = 0; i < pids.size();i++){
+    for(long unsigned int i = 0; i < pids.size();i++){
         //Update pid
         process.SetPid(pids[i]);
         //Update user
@@ -33,7 +34,11 @@ vector<Process>& System::Processes() {
         process.SetUser(LinuxParser::User(uid));
         
         //Update cpu utilization
-        //process.SetCpuUtilization();
+        auto uptime = LinuxParser::UpTime(pids[i]);
+        auto cpuUtilizationPID = processor.Utilization_Processes(pids[i], uptime);
+        
+        process.SetCpuUtilization(cpuUtilizationPID);
+
         //Update ram
         process.SetRam(LinuxParser::Ram(pids[i]));
         //Update time

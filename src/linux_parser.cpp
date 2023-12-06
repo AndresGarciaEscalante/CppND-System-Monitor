@@ -278,3 +278,43 @@ long LinuxParser::UpTime(int pid) {
   }
   return int(stoi(value)/sysconf(_SC_CLK_TCK));
  }
+
+// TODO: CPU Utilization
+vector<string> LinuxParser::CpuUtilization(int pid) { 
+  string dummy,user, state, ppid, pgrp  , session  , tty_nr  , tpgid  , flags  , minflt  , cminflt  ;
+  string majflt  ,cmajflt  ,utime  ,stime  ,cutime  ,cstime  ,priority  ,nice, num_threads  ,itrealvalue   ,starttime;
+  vector<string> cpu;
+  string line;
+  std::ifstream stream(kProcDirectory+std::to_string(pid)+kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    linestream >> dummy >> user >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >> minflt >> cminflt>>
+    majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> num_threads >> itrealvalue >> starttime;
+  }
+  // Push the information into the vector
+  cpu.push_back(dummy);
+  cpu.push_back(user);
+  cpu.push_back(state);
+  cpu.push_back(ppid);
+  cpu.push_back(pgrp);
+  cpu.push_back(session);
+  cpu.push_back(tty_nr);
+  cpu.push_back(tpgid);
+  cpu.push_back(flags);
+  cpu.push_back(minflt);
+  cpu.push_back(cminflt);
+  cpu.push_back(majflt);
+  cpu.push_back(cmajflt);
+  cpu.push_back(utime);
+  cpu.push_back(stime);
+  cpu.push_back(cutime);
+  cpu.push_back(cstime);
+  cpu.push_back(priority);
+  cpu.push_back(nice);
+  cpu.push_back(num_threads);
+  cpu.push_back(itrealvalue);
+  cpu.push_back(starttime);
+  
+  return cpu;
+}
