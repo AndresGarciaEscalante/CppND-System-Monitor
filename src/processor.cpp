@@ -60,8 +60,6 @@ float Processor::Utilization() {
 
 float Processor::Utilization_Processes(int pid, long uptime) { 
     // Store Values for CPU utilization
-    //float dummy, user ,state,ppid ,pgrp ,session ,tty_nr ,tpgid ,flags ,minflt ,cminflt ,majflt ,cmajflt ,utime ,stime 
-    //,cutime ,cstime ,priority ,nice ,num_threads ,itrealvalue ,starttime;
     float utime ,stime ,cutime ,cstime ,starttime;
     
     // Retrieve the information

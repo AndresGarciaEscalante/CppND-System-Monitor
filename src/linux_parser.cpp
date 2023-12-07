@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <iomanip> 
 
 #include "linux_parser.h"
 
@@ -102,19 +103,6 @@ long LinuxParser::UpTime() {
   return uptime;
 }
 
-// TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
-
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
-
-// TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
-
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
-
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
   string dummy,user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice;
@@ -127,17 +115,7 @@ vector<string> LinuxParser::CpuUtilization() {
     linestream >> dummy >> user >> nice >> system >> idle >> iowait >> irq >> softirq >> steal >> guest >> guest_nice;
   }
   // Push the information into the vector
-  cpu.push_back(user);
-  cpu.push_back(nice);
-  cpu.push_back(system);
-  cpu.push_back(idle);
-  cpu.push_back(iowait);
-  cpu.push_back(irq);
-  cpu.push_back(softirq);
-  cpu.push_back(steal);
-  cpu.push_back(guest);
-  cpu.push_back(guest_nice);
-
+  cpu = {user,nice,system,idle,iowait,irq,softirq,steal,guest,guest_nice};
   return cpu;
 }
 
@@ -209,7 +187,10 @@ string LinuxParser::Ram(int pid) {
         if (key == "VmSize:") {
           linestream >> value;
           convertMB = stof(value)/1000;
-          return std::to_string(convertMB);
+          // Set precision to 2 decimal places
+          std::stringstream ss;
+          ss << std::fixed << std::setprecision(2) << convertMB;
+          return ss.str();
         }
       }
     }
@@ -293,28 +274,7 @@ vector<string> LinuxParser::CpuUtilization(int pid) {
     majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> num_threads >> itrealvalue >> starttime;
   }
   // Push the information into the vector
-  cpu.push_back(dummy);
-  cpu.push_back(user);
-  cpu.push_back(state);
-  cpu.push_back(ppid);
-  cpu.push_back(pgrp);
-  cpu.push_back(session);
-  cpu.push_back(tty_nr);
-  cpu.push_back(tpgid);
-  cpu.push_back(flags);
-  cpu.push_back(minflt);
-  cpu.push_back(cminflt);
-  cpu.push_back(majflt);
-  cpu.push_back(cmajflt);
-  cpu.push_back(utime);
-  cpu.push_back(stime);
-  cpu.push_back(cutime);
-  cpu.push_back(cstime);
-  cpu.push_back(priority);
-  cpu.push_back(nice);
-  cpu.push_back(num_threads);
-  cpu.push_back(itrealvalue);
-  cpu.push_back(starttime);
-  
+  cpu = {dummy,user,state,ppid,pgrp,session,tty_nr,tpgid,flags,minflt,cminflt,majflt,
+  cmajflt,utime,stime,cutime,cstime,priority,nice,num_threads,itrealvalue,starttime};
   return cpu;
 }
