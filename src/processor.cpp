@@ -64,12 +64,19 @@ float Processor::Utilization_Processes(int pid, long uptime) {
     
     // Retrieve the information
     vector<string> cpu = LinuxParser::CpuUtilization(pid);
-    utime = stof(cpu[13]);;
-    stime = stof(cpu[14]);;
-    cutime = stof(cpu[15]);;
-    cstime = stof(cpu[16]);;
-    starttime = stof(cpu[21]);;
-
+    try
+    {
+        utime = stof(cpu[13]);;
+        stime = stof(cpu[14]);;
+        cutime = stof(cpu[15]);;
+        cstime = stof(cpu[16]);;
+        starttime = stof(cpu[21]);;
+    }
+    catch(const std::exception& e)
+    {
+        //std::cerr << e.what() << '\n';
+    }
+    
     // Calculate the CPU utilization
     auto total_time = utime + stime;
     total_time = total_time + cutime + cstime;

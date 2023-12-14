@@ -34,7 +34,8 @@ vector<Process>& System::Processes() {
         process.SetUser(LinuxParser::User(uid));
         
         //Update cpu utilization
-        auto uptime = LinuxParser::UpTime(pids[i]);
+        auto uptime = LinuxParser::UpTime();
+        
         auto cpuUtilizationPID = processor.Utilization_Processes(pids[i], uptime);
         
         process.SetCpuUtilization(cpuUtilizationPID);
